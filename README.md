@@ -83,7 +83,7 @@ curl http://localhost:8080/api/health
 
 ## 本次未实现内容
 
-- 导入功能（HAR）。
+- 导入功能（HAR / Postman Collection）。
 - 脚本编排。
 - 执行机与执行调度。
 - AI 能力接入。
