@@ -16,7 +16,8 @@
 - 全局异常处理 `GlobalExceptionHandler`。
 - 健康检查接口：`GET /api/health`。
 - 数据库连接示例配置：`application.yml`。
-- 初始化 SQL 占位文件：`docs/sql/init.sql`。
+- 初始化 SQL（核心表结构）：`docs/sql/init.sql`。
+- 基础领域模型（Entity/Mapper/Service）骨架：system_workspace、script_draft、flow_step、payload_content、field_config、script_variable、assertion_config、extractor_config、script_version、case_version。
 
 ## 目录结构
 
