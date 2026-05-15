@@ -4,7 +4,7 @@
 
 本项目是自动化测试平台新脚本服务 Demo，用于验证以下能力：
 
-- 导入 / 草稿管理，当前导入功能支持 HAR 格式。
+- 导入 / 草稿管理，当前导入功能支持 HAR 与 Postman Collection 格式。
 - 脚本编排：API_STEP、SQL_STEP、IF-ELSE、FOR、WAIT、COMPONENT。
 - 新报文模型：`rawBody + fieldConfigs + treeCache`。
 - 变量中心：变量中文名、英文名、数据类型、来源、作用域、使用位置。
@@ -35,7 +35,7 @@
 
 ## 业务约束
 
-- 导入功能当前只支持 HAR 格式。
+- 导入功能当前支持 HAR 与 Postman Collection 格式。
 - 导入后生成脚本草稿，不直接生成正式脚本用例。
 - 草稿确认后同步生成 ScriptVersion 和 CaseVersion。
 - `rawBody` 保存干净可执行报文。
