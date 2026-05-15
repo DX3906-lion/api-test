@@ -12,6 +12,8 @@ public class StepDetailVO {
     private String rawBody;
     private String treeCache;
     private List<FieldConfigItemVO> fieldConfigs;
+    private List<ExtractorConfigItemVO> extractors;
+    private List<AssertionConfigItemVO> assertions;
     public Long getStepId() { return stepId; }
     public void setStepId(Long stepId) { this.stepId = stepId; }
     public String getStepType() { return stepType; }
@@ -30,4 +32,8 @@ public class StepDetailVO {
     public void setTreeCache(String treeCache) { this.treeCache = treeCache; }
     public List<FieldConfigItemVO> getFieldConfigs() { return fieldConfigs; }
     public void setFieldConfigs(List<FieldConfigItemVO> fieldConfigs) { this.fieldConfigs = fieldConfigs; }
+    public List<ExtractorConfigItemVO> getExtractors() { return extractors; }
+    public void setExtractors(List<ExtractorConfigItemVO> extractors) { this.extractors = extractors; }
+    public List<AssertionConfigItemVO> getAssertions() { return assertions; }
+    public void setAssertions(List<AssertionConfigItemVO> assertions) { this.assertions = assertions; }
 }

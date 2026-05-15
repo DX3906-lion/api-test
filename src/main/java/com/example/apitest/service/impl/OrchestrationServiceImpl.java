@@ -16,6 +16,12 @@ import com.example.apitest.service.OrchestrationService;
 import com.example.apitest.vo.DraftOrchestrationVO;
 import com.example.apitest.vo.FieldConfigItemVO;
 import com.example.apitest.vo.StepDetailVO;
+import com.example.apitest.repository.ExtractorConfigMapper;
+import com.example.apitest.repository.AssertionConfigMapper;
+import com.example.apitest.entity.ExtractorConfig;
+import com.example.apitest.entity.AssertionConfig;
+import com.example.apitest.vo.ExtractorConfigItemVO;
+import com.example.apitest.vo.AssertionConfigItemVO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,10 +33,14 @@ public class OrchestrationServiceImpl implements OrchestrationService {
     private final FlowStepMapper flowStepMapper;
     private final PayloadContentMapper payloadContentMapper;
     private final FieldConfigMapper fieldConfigMapper;
+    private final ExtractorConfigMapper extractorConfigMapper;
+    private final AssertionConfigMapper assertionConfigMapper;
     public OrchestrationServiceImpl(ScriptDraftMapper scriptDraftMapper, FlowStepMapper flowStepMapper,
-                                    PayloadContentMapper payloadContentMapper, FieldConfigMapper fieldConfigMapper) {
+                                    PayloadContentMapper payloadContentMapper, FieldConfigMapper fieldConfigMapper,
+                                    ExtractorConfigMapper extractorConfigMapper, AssertionConfigMapper assertionConfigMapper) {
         this.scriptDraftMapper = scriptDraftMapper; this.flowStepMapper = flowStepMapper;
         this.payloadContentMapper = payloadContentMapper; this.fieldConfigMapper = fieldConfigMapper;
+        this.extractorConfigMapper = extractorConfigMapper; this.assertionConfigMapper = assertionConfigMapper;
     }
     public DraftOrchestrationVO getDraftStructure(Long draftId) {
         ScriptDraft draft = scriptDraftMapper.selectById(draftId);
@@ -73,6 +83,17 @@ public class OrchestrationServiceImpl implements OrchestrationService {
         PayloadContent p = payloadContentMapper.selectByStepId(s.getId()); if (p!=null) { vo.setPayloadId(p.getId()); vo.setRawBody(p.getRawBody()); vo.setTreeCache(p.getTreeCache()); }
         List<FieldConfigItemVO> fields = new ArrayList<>();
         for (FieldConfig f: fieldConfigMapper.selectByStepId(s.getId())) { FieldConfigItemVO i = new FieldConfigItemVO(); i.setFieldPath(f.getFieldPath()); i.setConfigType(f.getConfigType()); i.setParamMode(f.getParamMode()); i.setVariableName(f.getVariableName()); i.setVariableLabel(f.getVariableLabel()); i.setRemark(f.getRemark()); fields.add(i);} vo.setFieldConfigs(fields);
+
+        List<ExtractorConfigItemVO> exs = new ArrayList<>();
+        for (ExtractorConfig e : extractorConfigMapper.selectByStepId(s.getId())) {
+            ExtractorConfigItemVO i = new ExtractorConfigItemVO(); i.setId(e.getId()); i.setExtractType(e.getExtractType()); i.setExpression(e.getExpression()); i.setTargetVarName(e.getTargetVarName()); i.setTargetVarLabel(e.getTargetVarLabel()); i.setEnabled(e.getEnabled()); exs.add(i);
+        }
+        vo.setExtractors(exs);
+        List<AssertionConfigItemVO> ars = new ArrayList<>();
+        for (AssertionConfig a : assertionConfigMapper.selectByStepId(s.getId())) {
+            AssertionConfigItemVO i = new AssertionConfigItemVO(); i.setId(a.getId()); i.setAssertType(a.getAssertType()); i.setExpression(a.getExpression()); i.setExpectedValue(a.getExpectedValue()); i.setEnabled(a.getEnabled()); ars.add(i);
+        }
+        vo.setAssertions(ars);
         return vo;
     }
 }

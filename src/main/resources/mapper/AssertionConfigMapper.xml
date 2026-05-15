@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.apitest.repository.AssertionConfigMapper">
+    <resultMap id="BaseMap" type="com.example.apitest.entity.AssertionConfig">
+        <id column="id" property="id"/>
+        <result column="draft_id" property="draftId"/>
+        <result column="step_id" property="stepId"/>
+        <result column="assert_type" property="assertType"/>
+        <result column="expression" property="expression"/>
+        <result column="expected_value" property="expectedValue"/>
+        <result column="enabled" property="enabled"/>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into assertion_config(draft_id,step_id,assert_type,expression,expected_value,enabled,deleted)
+        values(#{draftId},#{stepId},#{assertType},#{expression},#{expectedValue},#{enabled},0)
+    </insert>
+    <update id="updateById">
+        update assertion_config set assert_type=#{assertType},expression=#{expression},expected_value=#{expectedValue},enabled=#{enabled}
+        where id=#{id} and deleted=0
+    </update>
+    <select id="selectById" resultMap="BaseMap">select * from assertion_config where id=#{id}</select>
+    <select id="selectByStepId" resultMap="BaseMap">select * from assertion_config where step_id=#{stepId} and deleted=0</select>
+    <update id="logicalDelete">update assertion_config set deleted=1 where id=#{id}</update>
+</mapper>

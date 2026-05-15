@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.apitest.repository.ExtractorConfigMapper">
+    <resultMap id="BaseMap" type="com.example.apitest.entity.ExtractorConfig">
+        <id column="id" property="id"/>
+        <result column="draft_id" property="draftId"/>
+        <result column="step_id" property="stepId"/>
+        <result column="extract_type" property="extractType"/>
+        <result column="expression" property="expression"/>
+        <result column="target_var_name" property="targetVarName"/>
+        <result column="target_var_label" property="targetVarLabel"/>
+        <result column="enabled" property="enabled"/>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into extractor_config(draft_id,step_id,extract_type,expression,target_var_name,target_var_label,enabled,deleted)
+        values(#{draftId},#{stepId},#{extractType},#{expression},#{targetVarName},#{targetVarLabel},#{enabled},0)
+    </insert>
+    <update id="updateById">
+        update extractor_config set extract_type=#{extractType},expression=#{expression},target_var_name=#{targetVarName},target_var_label=#{targetVarLabel},enabled=#{enabled}
+        where id=#{id} and deleted=0
+    </update>
+    <select id="selectById" resultMap="BaseMap">select * from extractor_config where id=#{id}</select>
+    <select id="selectByStepId" resultMap="BaseMap">select * from extractor_config where step_id=#{stepId} and deleted=0</select>
+    <update id="logicalDelete">update extractor_config set deleted=1 where id=#{id}</update>
+</mapper>
