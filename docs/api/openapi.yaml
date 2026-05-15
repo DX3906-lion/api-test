@@ -1,12 +1,7 @@
 openapi: 3.0.3
 info:
   title: API Test 新脚本服务 Demo API
-  version: 0.1.0
-  description: |
-    新脚本服务 Demo API 草案，覆盖导入、草稿、编排、变量中心、SQL 步骤、执行记录、正式脚本用例、AI 接口预留。
-servers:
-  - url: http://localhost:8080
-    description: local demo
+  version: 0.2.0
 paths:
   /api/health:
     get:
@@ -14,234 +9,60 @@ paths:
       responses:
         '200':
           description: success
-  /api/imports/har:
+  /api/imports/drafts:
     post:
-      summary: 导入 HAR 并生成脚本草稿
+      summary: 导入 HAR / Postman Collection 并生成脚本草稿
       requestBody:
         required: true
         content:
           multipart/form-data:
             schema:
               type: object
-              required: [systemId, draftName, file]
+              required: [workspaceId, draftName, importFormat, file]
               properties:
-                systemId:
+                workspaceId:
                   type: integer
                   format: int64
                 draftName:
                   type: string
+                importFormat:
+                  type: string
+                  enum: [HAR, POSTMAN_COLLECTION]
                 file:
                   type: string
                   format: binary
-                autoFilterStatic:
-                  type: boolean
-                tryMatchTrade:
-                  type: boolean
       responses:
         '200':
           description: 导入成功
-  /api/drafts:
     get:
-      summary: 查询脚本草稿列表
+      summary: 草稿列表查询
       parameters:
-        - name: systemId
+        - name: workspaceId
           in: query
           required: true
           schema:
             type: integer
             format: int64
-        - name: keyword
-          in: query
-          schema:
-            type: string
-        - name: status
-          in: query
-          schema:
-            type: string
       responses:
         '200':
-          description: 草稿列表
-    post:
-      summary: 新建空白脚本草稿
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateDraftRequest'
-      responses:
-        '200':
-          description: 创建成功
-  /api/drafts/{draftId}:
+          description: 查询成功
+  /api/imports/drafts/{draftId}:
     get:
-      summary: 查询草稿完整编排结构
+      summary: 草稿详情查询
       parameters:
-        - $ref: '#/components/parameters/DraftId'
+        - name: draftId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
-          description: 草稿详情
-    put:
-      summary: 保存草稿基础信息
-      parameters:
-        - $ref: '#/components/parameters/DraftId'
-      responses:
-        '200':
-          description: 保存成功
+          description: 查询成功
     delete:
       summary: 删除草稿
       parameters:
-        - $ref: '#/components/parameters/DraftId'
-      responses:
-        '200':
-          description: 删除成功
-  /api/drafts/{draftId}/steps:
-    post:
-      summary: 新增编排步骤
-      parameters:
-        - $ref: '#/components/parameters/DraftId'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateStepRequest'
-      responses:
-        '200':
-          description: 新增成功
-  /api/drafts/{draftId}/steps/reorder:
-    post:
-      summary: 调整步骤顺序
-      parameters:
-        - $ref: '#/components/parameters/DraftId'
-      responses:
-        '200':
-          description: 排序成功
-  /api/steps/{stepId}:
-    get:
-      summary: 查询步骤详情
-      parameters:
-        - $ref: '#/components/parameters/StepId'
-      responses:
-        '200':
-          description: 步骤详情
-    put:
-      summary: 保存步骤详情
-      parameters:
-        - $ref: '#/components/parameters/StepId'
-      responses:
-        '200':
-          description: 保存成功
-    delete:
-      summary: 删除步骤
-      parameters:
-        - $ref: '#/components/parameters/StepId'
-      responses:
-        '200':
-          description: 删除成功
-  /api/steps/{stepId}/copy:
-    post:
-      summary: 复制单个步骤
-      parameters:
-        - $ref: '#/components/parameters/StepId'
-      responses:
-        '200':
-          description: 复制成功
-  /api/steps/{stepId}/debug:
-    post:
-      summary: 单步调试
-      parameters:
-        - $ref: '#/components/parameters/StepId'
-      responses:
-        '200':
-          description: 调试结果
-  /api/steps/{stepId}/sql/debug:
-    post:
-      summary: SQL 步骤编辑时调试
-      parameters:
-        - $ref: '#/components/parameters/StepId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SqlDebugRequest'
-      responses:
-        '200':
-          description: SQL 调试结果
-  /api/drafts/{draftId}/variables:
-    get:
-      summary: 查询变量中心
-      parameters:
-        - $ref: '#/components/parameters/DraftId'
-      responses:
-        '200':
-          description: 变量列表
-    post:
-      summary: 新增脚本变量
-      parameters:
-        - $ref: '#/components/parameters/DraftId'
-      responses:
-        '200':
-          description: 新增成功
-  /api/drafts/{draftId}/validate:
-    post:
-      summary: 校验草稿
-      parameters:
-        - $ref: '#/components/parameters/DraftId'
-      responses:
-        '200':
-          description: 校验结果
-  /api/drafts/{draftId}/publish:
-    post:
-      summary: 保存为脚本版本和用例版本
-      parameters:
-        - $ref: '#/components/parameters/DraftId'
-      responses:
-        '200':
-          description: 发布成功
-  /api/cases:
-    get:
-      summary: 查询正式脚本用例列表
-      parameters:
-        - name: systemId
-          in: query
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: 用例列表
-  /api/cases/{caseId}/copy:
-    post:
-      summary: 复制正式脚本用例，必须填写新脚本名称
-      parameters:
-        - name: caseId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CopyCaseRequest'
-      responses:
-        '200':
-          description: 复制成功
-  /api/drafts/{draftId}/executions:
-    get:
-      summary: 查询脚本内部执行记录列表
-      parameters:
-        - $ref: '#/components/parameters/DraftId'
-      responses:
-        '200':
-          description: 执行记录列表
-  /api/executions/{runId}:
-    get:
-      summary: 查询执行记录详情
-      parameters:
-        - name: runId
+        - name: draftId
           in: path
           required: true
           schema:
@@ -249,110 +70,4 @@ paths:
             format: int64
       responses:
         '200':
-          description: 执行记录详情
-  /api/ai/assist:
-    post:
-      summary: AI 助手生成结构化建议
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AiAssistRequest'
-      responses:
-        '200':
-          description: AI 建议
-  /api/ai/patch/preview:
-    post:
-      summary: 预览 AI Patch 差异
-      responses:
-        '200':
-          description: Diff 预览
-  /api/ai/patch/apply:
-    post:
-      summary: 用户采纳后应用 AI Patch 到草稿
-      responses:
-        '200':
-          description: 应用结果
-components:
-  parameters:
-    DraftId:
-      name: draftId
-      in: path
-      required: true
-      schema:
-        type: integer
-        format: int64
-    StepId:
-      name: stepId
-      in: path
-      required: true
-      schema:
-        type: integer
-        format: int64
-  schemas:
-    CreateDraftRequest:
-      type: object
-      required: [systemId, draftName]
-      properties:
-        systemId:
-          type: integer
-          format: int64
-        draftName:
-          type: string
-        description:
-          type: string
-    CreateStepRequest:
-      type: object
-      required: [stepType, stepName]
-      properties:
-        stepType:
-          type: string
-          enum: [API_STEP, SQL_STEP, IF_ELSE, FOR_LOOP, WAIT, COMPONENT]
-        stepName:
-          type: string
-        parentStepId:
-          type: integer
-          format: int64
-    SqlDebugRequest:
-      type: object
-      properties:
-        dbType:
-          type: string
-          enum: [MYSQL, ORACLE, OCEANBASE_ORACLE]
-        jdbcUrl:
-          type: string
-        schema:
-          type: string
-        username:
-          type: string
-        sql:
-          type: string
-        saveToEnvironment:
-          type: boolean
-    CopyCaseRequest:
-      type: object
-      required: [newScriptName, copyMode]
-      properties:
-        newScriptName:
-          type: string
-        copyMode:
-          type: string
-          enum: [CREATE_DRAFT, CREATE_FORMAL]
-    AiAssistRequest:
-      type: object
-      properties:
-        requestId:
-          type: string
-        scriptDraftId:
-          type: integer
-          format: int64
-        userPrompt:
-          type: string
-        intent:
-          type: string
-        scope:
-          type: object
-        contextPolicy:
-          type: object
-        context:
-          type: object
+          description: 删除成功
