@@ -15,4 +15,9 @@
         values(#{draftId},#{stepId},#{contentType},#{rawBody},#{treeCache},#{deleted})
     </insert>
     <select id="selectById" resultMap="BaseMap">select * from payload_content where id=#{id}</select>
+    <select id="selectByStepId" resultMap="BaseMap">select * from payload_content where step_id=#{stepId} and deleted=0 limit 1</select>
+    <update id="updateByStepId">
+        update payload_content set raw_body=#{rawBody}, tree_cache=#{treeCache}
+        where step_id=#{stepId} and deleted=0
+    </update>
 </mapper>

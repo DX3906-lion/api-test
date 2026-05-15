@@ -54,3 +54,20 @@ CREATE TABLE IF NOT EXISTS payload_content (
   deleted TINYINT NOT NULL DEFAULT 0,
   KEY idx_draft_step (draft_id, step_id)
 );
+
+
+CREATE TABLE IF NOT EXISTS field_config (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  draft_id BIGINT NOT NULL,
+  step_id BIGINT NOT NULL,
+  field_path VARCHAR(255) NOT NULL,
+  config_type VARCHAR(32),
+  param_mode VARCHAR(32),
+  variable_name VARCHAR(64),
+  variable_label VARCHAR(64),
+  remark VARCHAR(512),
+  deleted TINYINT NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY idx_step_id (step_id)
+);
