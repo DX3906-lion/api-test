@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.apitest.repository.PayloadContentMapper">
+    <resultMap id="BaseMap" type="com.example.apitest.entity.PayloadContent">
+        <id column="id" property="id"/>
+        <result column="draft_id" property="draftId"/>
+        <result column="step_id" property="stepId"/>
+        <result column="content_type" property="contentType"/>
+        <result column="raw_body" property="rawBody"/>
+        <result column="tree_cache" property="treeCache"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into payload_content(draft_id,step_id,content_type,raw_body,tree_cache,deleted)
+        values(#{draftId},#{stepId},#{contentType},#{rawBody},#{treeCache},#{deleted})
+    </insert>
+    <select id="selectById" resultMap="BaseMap">select * from payload_content where id=#{id}</select>
+    <select id="selectByStepId" resultMap="BaseMap">select * from payload_content where step_id=#{stepId} and deleted=0 limit 1</select>
+    <update id="updateByStepId">
+        update payload_content set raw_body=#{rawBody}, tree_cache=#{treeCache}
+        where step_id=#{stepId} and deleted=0
+    </update>
+</mapper>
