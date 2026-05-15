@@ -1,10 +1,15 @@
 package com.example.apitest.repository;
 
 import com.example.apitest.entity.FlowStep;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
+@Mapper
 public interface FlowStepMapper {
-
     int insert(FlowStep entity);
-
-    FlowStep selectById(Long id);
+    FlowStep selectById(@Param("id") Long id);
+    List<FlowStep> selectByDraftId(@Param("draftId") Long draftId);
+    int logicalDeleteByDraftId(@Param("draftId") Long draftId);
 }

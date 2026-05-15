@@ -11,20 +11,23 @@ paths:
           description: success
   /api/imports/drafts:
     post:
-      summary: 导入 HAR 并生成脚本草稿
+      summary: 导入 HAR / Postman Collection 并生成脚本草稿
       requestBody:
         required: true
         content:
           multipart/form-data:
             schema:
               type: object
-              required: [workspaceId, draftName, file]
+              required: [workspaceId, draftName, importFormat, file]
               properties:
                 workspaceId:
                   type: integer
                   format: int64
                 draftName:
                   type: string
+                importFormat:
+                  type: string
+                  enum: [HAR, POSTMAN_COLLECTION]
                 file:
                   type: string
                   format: binary

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.apitest.repository.FlowStepMapper">
+    <resultMap id="BaseMap" type="com.example.apitest.entity.FlowStep">
+        <id column="id" property="id"/>
+        <result column="draft_id" property="draftId"/>
+        <result column="step_type" property="stepType"/>
+        <result column="step_name" property="stepName"/>
+        <result column="step_order" property="stepOrder"/>
+        <result column="enabled" property="enabled"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into flow_step(draft_id,step_type,step_name,step_order,enabled,deleted)
+        values(#{draftId},#{stepType},#{stepName},#{stepOrder},#{enabled},#{deleted})
+    </insert>
+    <select id="selectById" resultMap="BaseMap">select * from flow_step where id=#{id}</select>
+    <select id="selectByDraftId" resultMap="BaseMap">select * from flow_step where draft_id=#{draftId} and deleted=0 order by step_order asc</select>
+    <update id="logicalDeleteByDraftId">update flow_step set deleted=1 where draft_id=#{draftId}</update>
+</mapper>
