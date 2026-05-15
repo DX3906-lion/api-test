@@ -1,0 +1,2 @@
+-- 初始化脚本占位
+-- 后续按模块新增表结构：script_draft、script_version、case_version、variable_definition 等
