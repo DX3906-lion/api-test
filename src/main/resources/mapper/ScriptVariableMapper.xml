@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.apitest.repository.ScriptVariableMapper">
+    <resultMap id="BaseMap" type="com.example.apitest.entity.ScriptVariable">
+        <id column="id" property="id"/>
+        <result column="draft_id" property="draftId"/>
+        <result column="step_id" property="stepId"/>
+        <result column="var_name" property="varName"/>
+        <result column="var_label" property="varLabel"/>
+        <result column="data_type" property="dataType"/>
+        <result column="default_value" property="defaultValue"/>
+        <result column="source_type" property="sourceType"/>
+        <result column="scope_type" property="scopeType"/>
+        <result column="source_expression" property="sourceExpression"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into script_variable(draft_id,step_id,var_name,var_label,data_type,default_value,source_type,scope_type,source_expression,deleted)
+        values(#{draftId},#{stepId},#{varName},#{varLabel},#{dataType},#{defaultValue},#{sourceType},#{scopeType},#{sourceExpression},0)
+    </insert>
+    <update id="updateById">
+        update script_variable set var_label=#{varLabel},data_type=#{dataType},default_value=#{defaultValue},source_type=#{sourceType},scope_type=#{scopeType},source_expression=#{sourceExpression}
+        where id=#{id} and deleted=0
+    </update>
+    <select id="selectById" resultMap="BaseMap">select * from script_variable where id=#{id}</select>
+    <select id="selectByDraftId" resultMap="BaseMap">select * from script_variable where draft_id=#{draftId} and deleted=0</select>
+    <select id="selectByDraftIdAndVarName" resultMap="BaseMap">select * from script_variable where draft_id=#{draftId} and var_name=#{varName} and deleted=0 limit 1</select>
+    <update id="logicalDelete">update script_variable set deleted=1 where id=#{id}</update>
+</mapper>

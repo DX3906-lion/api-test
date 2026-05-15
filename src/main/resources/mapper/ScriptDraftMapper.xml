@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.apitest.repository.ScriptDraftMapper">
+    <resultMap id="BaseMap" type="com.example.apitest.entity.ScriptDraft">
+        <id column="id" property="id"/>
+        <result column="workspace_id" property="workspaceId"/>
+        <result column="draft_name" property="draftName"/>
+        <result column="source_type" property="sourceType"/>
+        <result column="import_format" property="importFormat"/>
+        <result column="status" property="status"/>
+        <result column="raw_file_path" property="rawFilePath"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into script_draft(workspace_id,draft_name,source_type,import_format,status,raw_file_path,deleted)
+        values(#{workspaceId},#{draftName},#{sourceType},#{importFormat},#{status},#{rawFilePath},#{deleted})
+    </insert>
+    <select id="selectById" resultMap="BaseMap">select * from script_draft where id=#{id}</select>
+    <select id="selectByWorkspaceIdAndDraftName" resultMap="BaseMap">
+        select * from script_draft where workspace_id=#{workspaceId} and draft_name=#{draftName} and deleted=0 limit 1
+    </select>
+    <select id="selectByWorkspaceId" resultMap="BaseMap">
+        select * from script_draft where workspace_id=#{workspaceId} and deleted=0 order by id desc
+    </select>
+    <update id="logicalDelete">update script_draft set deleted=1 where id=#{id}</update>
+</mapper>

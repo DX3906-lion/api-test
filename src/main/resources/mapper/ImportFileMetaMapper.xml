@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.apitest.repository.ImportFileMetaMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into import_file_meta(draft_id,workspace_id,origin_file_name,storage_path,import_format,file_size)
+        values(#{draftId},#{workspaceId},#{originFileName},#{storagePath},#{importFormat},#{fileSize})
+    </insert>
+</mapper>
