@@ -6,11 +6,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+/**
+ * HAR 文件解析策略，校验扩展名和 log.entries 关键结构。
+ */
 @Component
 public class HarImportParser implements ImportParser {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String supportFormat() { return "HAR"; }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(MultipartFile file) {
         String name = file.getOriginalFilename();

@@ -19,6 +19,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/imports")
+/**
+ * 导入/草稿管理控制器，提供导入、列表、详情、删除接口。
+ */
 public class ImportDraftController {
 
     private final ImportDraftService importDraftService;
@@ -27,21 +30,33 @@ public class ImportDraftController {
         this.importDraftService = importDraftService;
     }
 
+    /**
+     * 导入文件并生成脚本草稿。
+     */
     @PostMapping("/drafts")
     public ApiResponse<ImportDraftVO> importDraft(@Valid @ModelAttribute ImportDraftRequest request) {
         return ApiResponse.success(importDraftService.importDraft(request));
     }
 
+    /**
+     * 按工作空间查询草稿列表。
+     */
     @GetMapping("/drafts")
     public ApiResponse<List<ImportDraftVO>> listDrafts(@RequestParam("workspaceId") Long workspaceId) {
         return ApiResponse.success(importDraftService.listDrafts(workspaceId));
     }
 
+    /**
+     * 查询单个草稿详情。
+     */
     @GetMapping("/drafts/{draftId}")
     public ApiResponse<ScriptDraftDetailVO> getDraftDetail(@PathVariable("draftId") Long draftId) {
         return ApiResponse.success(importDraftService.getDraftDetail(draftId));
     }
 
+    /**
+     * 删除草稿（逻辑删除）。
+     */
     @DeleteMapping("/drafts/{draftId}")
     public ApiResponse<Void> deleteDraft(@PathVariable("draftId") Long draftId) {
         importDraftService.deleteDraft(draftId);

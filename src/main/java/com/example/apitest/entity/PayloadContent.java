@@ -1,11 +1,19 @@
 package com.example.apitest.entity;
 
+/**
+ * 报文内容实体，对应 payload_content 表。
+ */
 public class PayloadContent extends BaseEntity {
 
+    /** 所属草稿ID。 */
     private Long draftId;
+    /** 所属步骤ID。 */
     private Long stepId;
+    /** 报文类型。 */
     private String contentType;
+    /** 可执行原始报文（事实源）。 */
     private String rawBody;
+    /** 树结构缓存（仅展示用途）。 */
     private String treeCache;
 
     public Long getDraftId() { return draftId; }

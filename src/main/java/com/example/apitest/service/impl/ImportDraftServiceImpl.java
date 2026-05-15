@@ -24,6 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+/**
+ * 导入草稿服务实现。
+ * 负责按导入格式校验文件并落库 script_draft/flow_step/payload_content 等最小闭环数据。
+ */
 public class ImportDraftServiceImpl implements ImportDraftService {
 
     private final ScriptDraftMapper scriptDraftMapper;
@@ -47,6 +51,9 @@ public class ImportDraftServiceImpl implements ImportDraftService {
     }
 
     @Override
+    /**
+     * 导入文件并创建草稿、基础步骤与报文占位。
+     */
     public ImportDraftVO importDraft(ImportDraftRequest request) {
         if (request.getFile().isEmpty()) {
             throw new BusinessException("FILE_EMPTY", "import file is empty");
@@ -106,6 +113,9 @@ public class ImportDraftServiceImpl implements ImportDraftService {
     }
 
     @Override
+    /**
+     * 查询指定工作空间下的草稿列表。
+     */
     public List<ImportDraftVO> listDrafts(Long workspaceId) {
         List<ScriptDraft> drafts = scriptDraftMapper.selectByWorkspaceId(workspaceId);
         List<ImportDraftVO> result = new ArrayList<>();
@@ -118,6 +128,9 @@ public class ImportDraftServiceImpl implements ImportDraftService {
     }
 
     @Override
+    /**
+     * 查询草稿详情及其步骤信息。
+     */
     public ScriptDraftDetailVO getDraftDetail(Long draftId) {
         ScriptDraft draft = scriptDraftMapper.selectById(draftId);
         if (draft == null || (draft.getDeleted() != null && draft.getDeleted() == 1)) throw new BusinessException("DRAFT_NOT_FOUND", "draft not found");
@@ -132,6 +145,9 @@ public class ImportDraftServiceImpl implements ImportDraftService {
     }
 
     @Override
+    /**
+     * 删除草稿及其步骤（逻辑删除）。
+     */
     public void deleteDraft(Long draftId) {
         ScriptDraft draft = scriptDraftMapper.selectById(draftId);
         if (draft == null || (draft.getDeleted() != null && draft.getDeleted() == 1)) throw new BusinessException("DRAFT_NOT_FOUND", "draft not found");

@@ -1,11 +1,20 @@
 package com.example.apitest.entity;
 
+/**
+ * 导入文件元信息实体，对应 import_file_meta 表。
+ */
 public class ImportFileMeta extends BaseEntity {
+    /** 关联草稿ID。 */
     private Long draftId;
+    /** 工作空间ID。 */
     private Long workspaceId;
+    /** 原始文件名。 */
     private String originFileName;
+    /** 存储路径。 */
     private String storagePath;
+    /** 导入格式。 */
     private String importFormat;
+    /** 文件大小（字节）。 */
     private Long fileSize;
     public Long getDraftId() { return draftId; }
     public void setDraftId(Long draftId) { this.draftId = draftId; }

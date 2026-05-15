@@ -6,11 +6,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+/**
+ * Postman Collection 解析策略，校验扩展名和 item 关键结构。
+ */
 @Component
 public class PostmanCollectionParser implements ImportParser {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String supportFormat() { return "POSTMAN_COLLECTION"; }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validate(MultipartFile file) {
         String name = file.getOriginalFilename();
