@@ -14,9 +14,9 @@ paths:
       responses:
         '200':
           description: success
-  /api/imports/har:
+  /api/imports/drafts:
     post:
-      summary: 导入 HAR 并生成脚本草稿
+      summary: 导入 HAR / Postman Collection 文件并生成脚本草稿
       requestBody:
         required: true
         content:

@@ -21,10 +21,10 @@
 
 ## M2 导入 / 草稿管理
 
-- [ ] T021 实现导入弹窗后端接口，当前仅支持 HAR 格式
-- [ ] T022 校验 HAR 文件格式和 `log.entries`
+- [ ] T021 实现导入弹窗后端接口，当前支持 HAR 与 Postman Collection 格式
+- [ ] T022 分别校验 HAR(`log.entries`) 与 Postman Collection(`item`)
 - [ ] T023 保存原始导入文件元信息
-- [ ] T024 解析 HAR 并生成 `script_draft`
+- [ ] T024 解析 HAR / Postman Collection 并生成 `script_draft`
 - [ ] T025 生成基础 API_STEP
 - [ ] T026 草稿列表查询
 - [ ] T027 草稿详情查询
